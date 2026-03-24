@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/jsdtlkt.iml" filepath="$PROJECT_DIR$/jsdtlkt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jsdtk.iml" filepath="$PROJECT_DIR$/jsdtk.iml" />
     </modules>
   </component>
 </project>

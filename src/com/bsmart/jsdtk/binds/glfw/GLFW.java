@@ -1,7 +1,5 @@
 package com.bsmart.jsdtk.binds.glfw;
 
-import jdk.jfr.MemoryAddress;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +9,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.function.Function;
 
 import static java.lang.foreign.ValueLayout.*;
 import static java.lang.foreign.FunctionDescriptor.*;
@@ -958,7 +955,106 @@ public final class GLFW {
         }
     }
 
+    public static void glfwSetKeyCallback(long window, GLFWkeyfun callback) {
+        try {
+            Method m = callback.getClass().getMethod("callback", long.class, int.class, int.class, int.class, int.class);
+            MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT), global);
+            glfwSetKeyCallback.invokeExact(window, callbackAddress);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
 
+    public static void glfwSetCharCallback(long window, GLFWcharfun callback) {
+        try {
+            Method m = callback.getClass().getMethod("callback", long.class, int.class);
+            MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT), global);
+            glfwSetCharCallback.invokeExact(window, callbackAddress);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetCharModsCallback(long window, GLFWcharmodsfun callback) {
+        try {
+            Method m = callback.getClass().getMethod("callback", long.class, int.class, int.class);
+            MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT, JAVA_INT), global);
+            glfwSetCharModsCallback.invokeExact(window, callbackAddress);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetMouseButtonCallback(long window, GLFWmousebuttonfun callback) {
+        try {
+            Method m = callback.getClass().getMethod("callback", long.class, int.class, int.class, int.class);
+            MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT), global);
+            glfwSetMouseButtonCallback.invokeExact(window, callbackAddress);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetCursorPosCallback(long window, GLFWcursorposfun callback) {
+        try {
+            Method m = callback.getClass().getMethod("callback", long.class, double.class, double.class);
+            MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_DOUBLE, JAVA_DOUBLE), global);
+            glfwSetCursorPosCallback.invokeExact(window, callbackAddress);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetScrollCallback(long window, GLFWscrollfun callback) {
+        try {
+            Method m = callback.getClass().getMethod("callback", long.class, double.class, double.class);
+            MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT), global);
+            glfwSetCharCallback.invokeExact(window, callbackAddress);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetDropCallback(long window, GLFWdropfun callback) {
+        try {
+            Method m = callback.getClass().getMethod("callback", long.class, int.class, MemorySegment[].class);
+            MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT), global);
+            glfwSetCharCallback.invokeExact(window, callbackAddress);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static int glfwJoystickPresent(int jid) {
+        try {
+            return (int) glfwJoystickPresent.invokeExact(jid);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetJoyStickAxes(int jid, MemorySegment count) {
+        try {
+            return (MemorySegment) glfwGetJoystickAxes.invokeExact(jid, count);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetJoystickHats(int jid, MemorySegment count) {
+        try {
+            return (MemorySegment) glfwGetJoystickHats.invokeExact(jid, count);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
 
     public static String getLibraryDirectory() {
         return GLFW.class.getResource("/glfw/glfw3.dll").getPath();
