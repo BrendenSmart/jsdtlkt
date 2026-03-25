@@ -53,6 +53,8 @@ public final class GLFW {
 
     }
 
+
+    @SuppressWarnings("all")
     public static final int GLFW_NO_API = 0, GLFWOPENGL_API = 0x00030001, GLFW_OPENGL_ES_API = 0x00030002, GLFW_NO_ROBUSTNESS = 0, GLFW_NO_RESET_NOTIFICATION = 0x00031001,
     GLFW_LOSE_CONTEXT_ON_RESET = 0x00031002, GLFW_OPENGL_ANY_PROFILE = 0, GLFW_OPENGL_CORE_PROFILE = 0x00032001, GLFW_OPENGL_COMPAT_PROFILE = 0x00032002,
     GLFW_CURSOR = 0x00033001, GLFW_STICKY_KEYS = 0x00033002, GLFW_STICKY_MOUSE_BUTTONS = 0x00033003, GLFW_LOCK_KEY_MODS = 0x00033004, GLFW_RAW_MOUSE_MOTION = 0x00033005,
@@ -131,6 +133,7 @@ public final class GLFW {
     glfwMakeContextCurrent, glfwGetCurrentContext, glfwSwapBuffers, glfwSwapInterval, glfwExtensionSupported, glfwGetProcAddress, glfwVulkanSupported,
     glfwGetRequiredInstanceExtensions, glfwGetInstanceProcAddress, glfwGetPhysicalDevicePresentationSupport, glfwCreateWindowSurface;
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static void initIDs() {
         glfwInit = linker.downcallHandle(glfwlib.findOrThrow("glfwInit"), of(JAVA_INT));
         glfwTerminate = linker.downcallHandle(glfwlib.findOrThrow("glfwTerminate"), ofVoid());
@@ -233,6 +236,7 @@ public final class GLFW {
         glfwGetJoystickName = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickName"), of(ADDRESS, JAVA_INT));
         glfwJoystickIsGamepad = linker.downcallHandle(glfwlib.findOrThrow("glfwJoystickIsGamepad"), of(JAVA_INT, JAVA_INT));
         glfwSetJoystickCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetJoystickCallback"), of(JAVA_LONG, ADDRESS));
+        glfwGetJoystickUserPointer = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickUserPointer"), of(ADDRESS, JAVA_INT));
         glfwUpdateGamepadMappings = linker.downcallHandle(glfwlib.findOrThrow("glfwUpdateGamepadMappings"), of(JAVA_INT, ADDRESS));
         glfwGetGamepadName = linker.downcallHandle(glfwlib.findOrThrow("glfwGetGamepadName"), of(ADDRESS, JAVA_INT));
         glfwGetGamepadState = linker.downcallHandle(glfwlib.findOrThrow("glfwGetGamepadState"), of(JAVA_INT, JAVA_INT, ADDRESS));
@@ -339,9 +343,20 @@ public final class GLFW {
         }
     }
 
-    private static long glfwGetMonitors(long count) {
-        // TODO
-        return 0;
+    public static int glfwPlatformSupported(int platform) {
+        try {
+            return (int) glfwPlatformSupported.invokeExact(platform);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetMonitors(MemorySegment count) {
+        try {
+            return (MemorySegment) glfwGetMonitors.invokeExact(count);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
     }
 
     public static long glfwGetPrimaryMonitor() {
@@ -590,6 +605,14 @@ public final class GLFW {
     public static void glfwGetFramebufferSize(long window, MemorySegment width, MemorySegment height) {
         try {
             glfwGetFramebufferSize.invokeExact(width, width, height);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwGetWindowFrameSize(long window, MemorySegment left, MemorySegment top, MemorySegment right, MemorySegment bottom) {
+        try {
+            glfwGetWindowFrameSize.invokeExact(window, left, top, right, bottom);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -927,8 +950,11 @@ public final class GLFW {
     }
 
     private static long glfwCreateCursor(long image, int xhot, int yhot) {
-        //TODO
-        return 0;
+        try {
+            return (long) glfwCreateCursor.invokeExact(image, xhot, yhot);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
     }
 
     public static long glfwCreateStandardCursor(int shape) {
@@ -1051,6 +1077,214 @@ public final class GLFW {
     public static MemorySegment glfwGetJoystickHats(int jid, MemorySegment count) {
         try {
             return (MemorySegment) glfwGetJoystickHats.invokeExact(jid, count);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetJoystickName(int jid) {
+        try {
+            return (MemorySegment) glfwGetJoystickName.invokeExact(jid);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetJoystickGUID(int jid) {
+        try {
+            return (MemorySegment) glfwGetJoystickGUID.invokeExact(jid);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetJoystickUserPointer(int jid, MemorySegment pointer) {
+        try {
+            glfwSetJoystickUserPointer.invokeExact(jid, pointer);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetJoystickUserPointer(int jid) {
+        try {
+            return (MemorySegment) glfwGetJoystickUserPointer.invokeExact(jid);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static int glfwJoystickIsGamepad(int jid) {
+        try {
+            return (int) glfwJoystickIsGamepad.invokeExact(jid);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetJoystickCallback(GLFWjoystickfun callback) {
+        try {
+            // TODO
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static int glfwUpdateGamepadMappings(MemorySegment string) {
+        try {
+            return (int) glfwUpdateGamepadMappings.invokeExact(string);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetGamepadName(int jid) {
+        try {
+            return (MemorySegment) glfwGetGamepadName.invokeExact(jid);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static int glfwGetGamepadState(int jid, MemorySegment state) {
+        try {
+            return (int) glfwGetGamepadState.invokeExact(jid, state);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetClipboardString(long window, MemorySegment string) {
+        try {
+            glfwSetClipboardString.invokeExact(window, string);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetClipboardString(long window) {
+        try {
+            return (MemorySegment) glfwGetClipboardString.invokeExact(window);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static double glfwGetTime() {
+        try {
+            return (double) glfwGetTime.invokeExact();
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSetTime(double time) {
+        try {
+            glfwSetTime.invokeExact(time);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static long glfwGetTimerValue() {
+        try {
+            return (long) glfwGetTimerValue.invokeExact();
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static long glfwGetTimerFrequency() {
+        try {
+            return (long) glfwGetTimerFrequency.invokeExact();
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwMakeContextCurrent(long window) {
+        try {
+            glfwMakeContextCurrent.invokeExact(window);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static long glfwGetCurrentContext() {
+        try {
+            return (long) glfwGetCurrentContext.invokeExact();
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSwapBuffers(long window) {
+        try {
+            glfwSwapBuffers.invokeExact(window);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static void glfwSwapInterval(int interval) {
+        try {
+            glfwSwapInterval.invokeExact(interval);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static int glfwExtensionSupported(MemorySegment extension) {
+        try {
+            return (int) glfwExtensionSupported.invokeExact(extension);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetProcAddress(MemorySegment procname) {
+        try {
+            return (MemorySegment) glfwGetProcAddress.invokeExact(procname);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static int glfwVulkanSupported() {
+        try {
+            return (int) glfwVulkanSupported.invokeExact();
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetRequiredInstanceExtensions(MemorySegment count) {
+        try {
+            return (MemorySegment) glfwGetRequiredInstanceExtensions.invokeExact(count);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwGetInstanceProcAddress() {
+        try {
+            return (MemorySegment) glfwGetInstanceProcAddress.invokeExact();
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static int glfwGetPhysicalDevicePresentationSupport(MemorySegment instance, MemorySegment device, long queuefamily) {
+        try {
+            return (int) glfwGetPhysicalDevicePresentationSupport.invokeExact(instance, device, queuefamily);
+        } catch (Throwable e) {
+            throw new GLFWException(e);
+        }
+    }
+
+    public static MemorySegment glfwCreateWindowSurface(MemorySegment instance, long window, MemorySegment allocator, MemorySegment surface) {
+        try {
+            return (MemorySegment) glfwCreateWindowSurface.invokeExact(instance, window, allocator, surface);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }

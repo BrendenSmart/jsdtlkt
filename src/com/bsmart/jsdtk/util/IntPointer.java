@@ -1,4 +1,4 @@
-package com.bsmart.jsdtk.utils;
+package com.bsmart.jsdtk.util;
 
 import java.lang.foreign.ValueLayout.OfInt;
 
@@ -8,11 +8,15 @@ public class IntPointer extends Pointer {
         ptr = arena.allocateFrom(OfInt.JAVA_INT, 0, value);
     }
 
-    public void setValue(int value) {
+    protected IntPointer() {
+        ptr = arena.allocate(OfInt.JAVA_INT);
+    }
+
+    public void set(int value) {
         ptr.set(OfInt.JAVA_INT, 0, value);
     }
 
-    public int getValue() {
+    public int get() {
         return ptr.get(OfInt.JAVA_INT, 0);
     }
 

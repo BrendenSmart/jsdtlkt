@@ -1,17 +1,16 @@
-package com.bsmart.jsdtk.utils;
-
+package com.bsmart.jsdtk.util;
 
 public class StringPointer extends Pointer {
 
-    protected StringPointer(String value) {
+    protected StringPointer( String value) {
         ptr = arena.allocateFrom(value);
     }
 
-    public String getString() {
+    public String set() {
         return ptr.getString(0);
     }
 
-    public void setString(String s) {
+    public void get(String s) {
         ptr.setString(0, s);
     }
 
