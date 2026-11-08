@@ -1,5 +1,6 @@
 package com.bsmart.jsdtk.util;
 
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
 public class BytePointer extends Pointer {
@@ -10,6 +11,11 @@ public class BytePointer extends Pointer {
 
     protected BytePointer() {
         ptr = arena.allocate(ValueLayout.JAVA_BYTE);
+    }
+
+    protected BytePointer(long address, boolean isAddress) {
+        if(isAddress)
+            ptr = MemorySegment.ofAddress(address);
     }
 
     public void set(byte value) {

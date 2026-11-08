@@ -1,5 +1,6 @@
 package com.bsmart.jsdtk.util;
 
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout.OfInt;
 
 public class IntPointer extends Pointer {
@@ -10,6 +11,11 @@ public class IntPointer extends Pointer {
 
     protected IntPointer() {
         ptr = arena.allocate(OfInt.JAVA_INT);
+    }
+
+    protected IntPointer(long address, boolean isAddress) {
+        if(isAddress)
+            ptr = MemorySegment.ofAddress(address);
     }
 
     public void set(int value) {

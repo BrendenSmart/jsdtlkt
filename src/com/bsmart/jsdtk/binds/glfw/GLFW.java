@@ -10,6 +10,13 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
 
+import com.bsmart.jsdtk.util.StringPointer;
+import com.bsmart.jsdtk.util.DoublePointer;
+import com.bsmart.jsdtk.util.IntPointer;
+import com.bsmart.jsdtk.util.FloatPointer;
+import com.bsmart.jsdtk.util.Pointer;
+import com.bsmart.jsdtk.util.LongPointer;
+
 import static java.lang.foreign.ValueLayout.*;
 import static java.lang.foreign.FunctionDescriptor.*;
 
@@ -164,7 +171,7 @@ public final class GLFW {
         glfwDefaultWindowHints = linker.downcallHandle(glfwlib.findOrThrow("glfwDefaultWindowHints"), FunctionDescriptor.ofVoid());
         glfwWindowHint = linker.downcallHandle(glfwlib.findOrThrow("glfwWindowHint"), FunctionDescriptor.ofVoid(JAVA_INT, JAVA_INT));
         glfwWindowHintString = linker.downcallHandle(glfwlib.findOrThrow("glfwWindowHintString"), FunctionDescriptor.ofVoid(JAVA_INT, JAVA_LONG));
-        glfwCreateWindow = linker.downcallHandle(glfwlib.findOrThrow("glfwCreateWindow"), FunctionDescriptor.of(JAVA_LONG, JAVA_INT, JAVA_INT, ADDRESS, JAVA_LONG, JAVA_LONG));
+        glfwCreateWindow = linker.downcallHandle(glfwlib.findOrThrow("glfwCreateWindow"), FunctionDescriptor.of(JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_LONG, JAVA_LONG, JAVA_LONG));
         glfwDestroyWindow = linker.downcallHandle(glfwlib.findOrThrow("glfwDestroyWindow"), FunctionDescriptor.ofVoid(JAVA_LONG));
         glfwWindowShouldClose = linker.downcallHandle(glfwlib.findOrThrow("glfwWindowShouldClose"), FunctionDescriptor.of(JAVA_INT, JAVA_LONG));
         glfwSetWindowShouldClose = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowShouldClose"), FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_INT));
@@ -195,15 +202,15 @@ public final class GLFW {
         glfwSetWindowAttrib = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowAttrib"), ofVoid(JAVA_LONG, JAVA_INT, JAVA_INT));
         glfwSetWindowUserPointer = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowUserPointer"), ofVoid(JAVA_LONG));
         glfwGetWindowUserPointer = linker.downcallHandle(glfwlib.findOrThrow("glfwGetWindowUserPointer"), of(JAVA_LONG, JAVA_LONG));
-        glfwSetWindowPosCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowPosCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetWindowSizeCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowSizeCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetWindowCloseCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowCloseCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetWindowRefreshCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowRefreshCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetWindowFocusCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowFocusCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetWindowIconifyCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowIconifyCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetWindowMaximizeCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowMaximizeCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetFramebufferSizeCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetFramebufferSizeCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetWindowContentScaleCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowContentScaleCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
+        glfwSetWindowPosCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowPosCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetWindowSizeCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowSizeCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetWindowCloseCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowCloseCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetWindowRefreshCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowRefreshCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetWindowFocusCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowFocusCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetWindowIconifyCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowIconifyCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetWindowMaximizeCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowMaximizeCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetFramebufferSizeCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetFramebufferSizeCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetWindowContentScaleCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetWindowContentScaleCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
         glfwPollEvents = linker.downcallHandle(glfwlib.findOrThrow("glfwPollEvents"), ofVoid());
         glfwWaitEvents = linker.downcallHandle(glfwlib.findOrThrow("glfwWaitEvents"), ofVoid());
         glfwWaitEventsTimeout = linker.downcallHandle(glfwlib.findOrThrow("glfwWaitEventsTimeout"), ofVoid(JAVA_DOUBLE));
@@ -215,48 +222,48 @@ public final class GLFW {
         glfwGetKeyScancode = linker.downcallHandle(glfwlib.findOrThrow("glfwGetKeyScancode"), of(JAVA_INT, JAVA_INT));
         glfwGetKey = linker.downcallHandle(glfwlib.findOrThrow("glfwGetKey"), of(JAVA_INT, JAVA_LONG, JAVA_INT));
         glfwGetMouseButton = linker.downcallHandle(glfwlib.findOrThrow("glfwGetMouseButton"), of(JAVA_INT, JAVA_LONG, JAVA_INT));
-        glfwGetCursorPos = linker.downcallHandle(glfwlib.findOrThrow("glfwGetCursorPos"), ofVoid(JAVA_LONG, ADDRESS, ADDRESS));
+        glfwGetCursorPos = linker.downcallHandle(glfwlib.findOrThrow("glfwGetCursorPos"), ofVoid(JAVA_LONG, JAVA_LONG, JAVA_LONG));
         glfwSetCursorPos = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCursorPos"), ofVoid(JAVA_LONG, JAVA_DOUBLE, JAVA_DOUBLE));
         glfwCreateCursor = linker.downcallHandle(glfwlib.findOrThrow("glfwCreateCursor"), of(JAVA_LONG, JAVA_LONG, JAVA_INT, JAVA_INT));
         glfwCreateStandardCursor = linker.downcallHandle(glfwlib.findOrThrow("glfwCreateStandardCursor"), of(JAVA_LONG, JAVA_INT));
         glfwDestroyCursor = linker.downcallHandle(glfwlib.findOrThrow("glfwDestroyCursor"), ofVoid(JAVA_LONG));
         glfwSetCursor = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCursor"), ofVoid(JAVA_LONG, JAVA_LONG));
-        glfwSetKeyCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetKeyCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetCharCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCharCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetCharModsCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCharModsCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetMouseButtonCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetMouseButtonCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetCursorPosCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCursorPosCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetCursorEnterCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCursorEnterCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetScrollCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetScrollCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
-        glfwSetDropCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetDropCallback"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
+        glfwSetKeyCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetKeyCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+         glfwSetCharCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCharCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetCharModsCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCharModsCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetMouseButtonCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetMouseButtonCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetCursorPosCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCursorPosCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetCursorEnterCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetCursorEnterCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetScrollCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetScrollCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
+        glfwSetDropCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetDropCallback"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
         glfwJoystickPresent = linker.downcallHandle(glfwlib.findOrThrow("glfwJoystickPresent"), of(JAVA_INT, JAVA_INT));
-        glfwGetJoystickAxes = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickAxes"), of(ADDRESS, JAVA_INT, ADDRESS));
-        glfwGetJoyStickButtons = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickButtons"), of(ADDRESS, JAVA_INT, ADDRESS));
-        glfwGetJoystickHats = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickHats"), of(ADDRESS, JAVA_INT, ADDRESS));
-        glfwGetJoystickName = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickName"), of(ADDRESS, JAVA_INT));
+        glfwGetJoystickAxes = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickAxes"), of(JAVA_LONG, JAVA_INT, JAVA_LONG));
+        glfwGetJoyStickButtons = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickButtons"), of(JAVA_LONG, JAVA_INT, JAVA_LONG));
+        glfwGetJoystickHats = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickHats"), of(JAVA_LONG, JAVA_INT, JAVA_LONG));
+        glfwGetJoystickName = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickName"), of(JAVA_LONG, JAVA_INT));
         glfwJoystickIsGamepad = linker.downcallHandle(glfwlib.findOrThrow("glfwJoystickIsGamepad"), of(JAVA_INT, JAVA_INT));
-        glfwSetJoystickCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetJoystickCallback"), of(JAVA_LONG, ADDRESS));
-        glfwGetJoystickUserPointer = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickUserPointer"), of(ADDRESS, JAVA_INT));
-        glfwUpdateGamepadMappings = linker.downcallHandle(glfwlib.findOrThrow("glfwUpdateGamepadMappings"), of(JAVA_INT, ADDRESS));
-        glfwGetGamepadName = linker.downcallHandle(glfwlib.findOrThrow("glfwGetGamepadName"), of(ADDRESS, JAVA_INT));
-        glfwGetGamepadState = linker.downcallHandle(glfwlib.findOrThrow("glfwGetGamepadState"), of(JAVA_INT, JAVA_INT, ADDRESS));
-        glfwSetClipboardString = linker.downcallHandle(glfwlib.findOrThrow("glfwSetClipboardString"), ofVoid(JAVA_LONG, ADDRESS));
-        glfwGetClipboardString = linker.downcallHandle(glfwlib.findOrThrow("glfwGetClipboardString"), of(ADDRESS, JAVA_LONG));
+        glfwSetJoystickCallback = linker.downcallHandle(glfwlib.findOrThrow("glfwSetJoystickCallback"), of(JAVA_LONG, JAVA_LONG));
+        glfwGetJoystickUserPointer = linker.downcallHandle(glfwlib.findOrThrow("glfwGetJoystickUserPointer"), of(JAVA_LONG, JAVA_INT));
+        glfwUpdateGamepadMappings = linker.downcallHandle(glfwlib.findOrThrow("glfwUpdateGamepadMappings"), of(JAVA_INT, JAVA_LONG));
+        glfwGetGamepadName = linker.downcallHandle(glfwlib.findOrThrow("glfwGetGamepadName"), of(JAVA_LONG, JAVA_INT));
+        glfwGetGamepadState = linker.downcallHandle(glfwlib.findOrThrow("glfwGetGamepadState"), of(JAVA_INT, JAVA_INT, JAVA_LONG));
+        glfwSetClipboardString = linker.downcallHandle(glfwlib.findOrThrow("glfwSetClipboardString"), ofVoid(JAVA_LONG, JAVA_LONG));
+        glfwGetClipboardString = linker.downcallHandle(glfwlib.findOrThrow("glfwGetClipboardString"), of(JAVA_LONG, JAVA_LONG));
         glfwGetTime = linker.downcallHandle(glfwlib.findOrThrow("glfwGetTime"), of(JAVA_DOUBLE));
         glfwSetTime = linker.downcallHandle(glfwlib.findOrThrow("glfwSetTime"), ofVoid(JAVA_DOUBLE));
         glfwGetTimerValue = linker.downcallHandle(glfwlib.findOrThrow("glfwGetTimerValue"), of(JAVA_LONG));
         glfwGetTimerFrequency = linker.downcallHandle(glfwlib.findOrThrow("glfwGetTimerFrequency"), of(JAVA_LONG));
-        glfwMakeContextCurrent = linker.downcallHandle(glfwlib.findOrThrow("glfwMakeContextCurrent"), of(JAVA_LONG));
+        glfwMakeContextCurrent = linker.downcallHandle(glfwlib.findOrThrow("glfwMakeContextCurrent"), ofVoid(JAVA_LONG));
         glfwGetCurrentContext = linker.downcallHandle(glfwlib.findOrThrow("glfwGetCurrentContext"), of(JAVA_LONG, JAVA_LONG));
         glfwSwapBuffers = linker.downcallHandle(glfwlib.findOrThrow("glfwSwapBuffers"), ofVoid(JAVA_LONG));
         glfwSwapInterval = linker.downcallHandle(glfwlib.findOrThrow("glfwSwapInterval"), ofVoid(JAVA_INT));
-        glfwExtensionSupported = linker.downcallHandle(glfwlib.findOrThrow("glfwExtensionSupported"), of(JAVA_INT, ADDRESS));
-        glfwGetProcAddress = linker.downcallHandle(glfwlib.findOrThrow("glfwGetProcAddress"), of(JAVA_LONG, ADDRESS));
+        glfwExtensionSupported = linker.downcallHandle(glfwlib.findOrThrow("glfwExtensionSupported"), of(JAVA_INT, JAVA_LONG));
+        glfwGetProcAddress = linker.downcallHandle(glfwlib.findOrThrow("glfwGetProcAddress"), of(JAVA_LONG, JAVA_LONG));
         glfwVulkanSupported = linker.downcallHandle(glfwlib.findOrThrow("glfwVulkanSupported"), of(JAVA_INT));
-        glfwGetRequiredInstanceExtensions = linker.downcallHandle(glfwlib.findOrThrow("glfwGetRequiredInstanceExtensions"), of(ADDRESS, JAVA_LONG));
-        glfwGetInstanceProcAddress = linker.downcallHandle(glfwlib.findOrThrow("glfwGetInstanceProcAddress"), of(JAVA_LONG, JAVA_LONG, ADDRESS));
+        glfwGetRequiredInstanceExtensions = linker.downcallHandle(glfwlib.findOrThrow("glfwGetRequiredInstanceExtensions"), of(JAVA_LONG, JAVA_LONG));
+        glfwGetInstanceProcAddress = linker.downcallHandle(glfwlib.findOrThrow("glfwGetInstanceProcAddress"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
         glfwGetPhysicalDevicePresentationSupport = linker.downcallHandle(glfwlib.findOrThrow("glfwGetPhysicalDevicePresentationSupport"), of(JAVA_INT, JAVA_LONG, JAVA_LONG, JAVA_LONG));
-        glfwCreateWindowSurface = linker.downcallHandle(glfwlib.findOrThrow("glfwCreateWindowSurface"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG, ADDRESS, ADDRESS));
+        glfwCreateWindowSurface = linker.downcallHandle(glfwlib.findOrThrow("glfwCreateWindowSurface"), of(JAVA_LONG, JAVA_LONG, JAVA_LONG, JAVA_LONG, JAVA_LONG));
     }
 
     public static int glfwInit() {
@@ -299,23 +306,24 @@ public final class GLFW {
         }
     }
 
-    public static void glfwGetVersion(long major, long minor, long rev) {
+    public static void glfwGetVersion(IntPointer major, IntPointer minor, IntPointer rev) {
         try {
-            glfwGetVersion.invokeExact(major, minor, rev);
+
+            glfwGetVersion.invokeExact(major.getPhysicalAddress(), minor.getPhysicalAddress(), rev.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static long glfwGetVersionString() {
+    public static StringPointer glfwGetVersionString() {
         try {
-            return (long) glfwGetVersionString.invokeExact();
+            return Pointer.ofAddressString((long)glfwGetVersionString.invokeExact());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static int glfwGetError(long desc) {
+    public static int glfwGetError(StringPointer desc) {
         try {
             return (int) glfwGetError.invokeExact(desc);
         } catch (Throwable e) {
@@ -325,7 +333,6 @@ public final class GLFW {
 
     public static void glfwSetErrorCallback(GLFWerrorfun callback) {
         try {
-
             Method m = callback.getClass().getMethod("callback", int.class, long.class);
             MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
             MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_INT, JAVA_LONG), global);
@@ -351,9 +358,9 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetMonitors(MemorySegment count) {
+    public static LongPointer glfwGetMonitors(IntPointer count) {
         try {
-            return (MemorySegment) glfwGetMonitors.invokeExact(count);
+            return Pointer.ofAddressLong((long) (glfwGetMonitors.invokeExact(count.getPhysicalAddress())));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -367,47 +374,47 @@ public final class GLFW {
         }
     }
 
-    public static void glfwGetMonitorPos(long monitor, MemorySegment xpos, MemorySegment ypos) {
+    public static void glfwGetMonitorPos(long monitor, IntPointer xpos, IntPointer ypos) {
         try {
-            glfwGetMonitorPos.invokeExact(monitor, xpos, ypos);
+            glfwGetMonitorPos.invokeExact(monitor, xpos.getPhysicalAddress(), ypos.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwGetMonitorWorkarea(long monitor, MemorySegment xpos, MemorySegment ypos, MemorySegment width, MemorySegment height) {
+    public static void glfwGetMonitorWorkarea(long monitor, IntPointer xpos, IntPointer ypos, IntPointer width, IntPointer height) {
         try {
-            glfwGetMonitorWorkArea.invokeExact(monitor, xpos, ypos, width, height);
+            glfwGetMonitorWorkArea.invokeExact(monitor, xpos.getPhysicalAddress(), ypos.getPhysicalAddress(), width.getPhysicalAddress(), height.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwGetMonitorPhysicalSize(long monitor, MemorySegment widthMM, MemorySegment heightMM) {
+    public static void glfwGetMonitorPhysicalSize(long monitor, IntPointer widthMM, IntPointer heightMM) {
         try {
-            glfwGetMonitorPhysicalSize.invokeExact(monitor, widthMM, heightMM);
+            glfwGetMonitorPhysicalSize.invokeExact(monitor, widthMM.getPhysicalAddress(), heightMM.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwGetMonitorContentScale(long monitor, MemorySegment xscale, MemorySegment yscale) {
+    public static void glfwGetMonitorContentScale(long monitor, FloatPointer xscale, FloatPointer yscale) {
         try {
-            glfwGetMonitorContentScale.invokeExact(monitor, xscale, yscale);
+            glfwGetMonitorContentScale.invokeExact(monitor, xscale.getPhysicalAddress(), yscale.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetMonitorName(long monitor) {
+    public static StringPointer glfwGetMonitorName(long monitor) {
         try {
-            return (MemorySegment) glfwGetMonitorName.invokeExact(monitor);
+            return StringPointer.ofAddressString((long) glfwGetMonitorName.invokeExact(monitor));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwSetMonitorUserPointer(long monitor, MemorySegment pointer) {
+    public static void glfwSetMonitorUserPointer(long monitor, long pointer) {
         try {
             glfwSetMonitorUserPointer.invokeExact(monitor, pointer);
         } catch (Throwable e) {
@@ -415,9 +422,9 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetMonitorUserPointer(long monitor) {
+    public static long glfwGetMonitorUserPointer(long monitor) {
         try {
-            return ((MemorySegment) glfwGetMonitorUserPointer.invokeExact(monitor));
+            return ((long) glfwGetMonitorUserPointer.invokeExact(monitor));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -434,17 +441,17 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetVideoModes(long monitor, MemorySegment count) {
+    public static long glfwGetVideoModes(long monitor, IntPointer count) {
         try {
-            return (MemorySegment) glfwGetVideoModes.invokeExact(monitor, count);
+            return (long) glfwGetVideoModes.invokeExact(monitor, count);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetVideoMode(long monitor) {
+    public static long glfwGetVideoMode(long monitor) {
         try {
-            return (MemorySegment) glfwGetVideoMode.invokeExact(monitor);
+            return (long) glfwGetVideoMode.invokeExact(monitor);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -490,17 +497,17 @@ public final class GLFW {
         }
     }
 
-    public static void glfwWindowHintString(int hint, MemorySegment value) {
+    public static void glfwWindowHintString(int hint, StringPointer value) {
         try {
-            glfwWindowHintString.invokeExact(hint, value);
+            glfwWindowHintString.invokeExact(hint, value.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static long glfwCreateWindow(int width, int height, MemorySegment title, long monitor, long share) {
+    public static long glfwCreateWindow(int width, int height, StringPointer title, long monitor, long share) {
         try {
-            return (long) glfwCreateWindow.invokeExact(width, height, title, monitor, share);
+            return (long) glfwCreateWindow.invokeExact(width, height, title.getPhysicalAddress(), monitor, share);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -530,23 +537,23 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetWindowTitle(long window) {
+    public static StringPointer glfwGetWindowTitle(long window) {
         try {
-            return (MemorySegment) glfwGetWindowTitle.invokeExact(window);
+            return Pointer.ofAddressString((long) glfwGetWindowTitle.invokeExact(window));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwSetWindowTitle(long window, MemorySegment title) {
+    public static void glfwSetWindowTitle(long window, StringPointer title) {
         try {
-            glfwSetWindowTitle.invokeExact(window, title);
+            glfwSetWindowTitle.invokeExact(window, title.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwSetWindowIcon(long window, int count, MemorySegment images) {
+    public static void glfwSetWindowIcon(long window, int count, long images) {
         try {
             glfwSetWindowIcon.invokeExact(window, count, images);
         } catch (Throwable e) {
@@ -554,9 +561,9 @@ public final class GLFW {
         }
     }
 
-    public static void glfwGetWindowPos(long window, MemorySegment xpos, MemorySegment ypos) {
+    public static void glfwGetWindowPos(long window, IntPointer xpos, IntPointer ypos) {
         try {
-            glfwGetWindowPos.invokeExact(window, xpos, ypos);
+            glfwGetWindowPos.invokeExact(window, xpos.getPhysicalAddress(), ypos.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -570,9 +577,9 @@ public final class GLFW {
         }
     }
 
-    public static void glfwGetWindowSize(long window, MemorySegment width, MemorySegment height) {
+    public static void glfwGetWindowSize(long window, IntPointer width, IntPointer height) {
         try {
-            glfwGetWindowSize.invokeExact(window, window, height);
+            glfwGetWindowSize.invokeExact(window, width.getPhysicalAddress(), height.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -602,25 +609,25 @@ public final class GLFW {
         }
     }
 
-    public static void glfwGetFramebufferSize(long window, MemorySegment width, MemorySegment height) {
+    public static void glfwGetFramebufferSize(long window, IntPointer width, IntPointer height) {
         try {
-            glfwGetFramebufferSize.invokeExact(width, width, height);
+            glfwGetFramebufferSize.invokeExact(window, width.getPhysicalAddress(), height.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwGetWindowFrameSize(long window, MemorySegment left, MemorySegment top, MemorySegment right, MemorySegment bottom) {
+    public static void glfwGetWindowFrameSize(long window, IntPointer left, IntPointer top, IntPointer right, IntPointer bottom) {
         try {
-            glfwGetWindowFrameSize.invokeExact(window, left, top, right, bottom);
+            glfwGetWindowFrameSize.invokeExact(window, left.getPhysicalAddress(), top.getPhysicalAddress(), right.getPhysicalAddress(), bottom.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwGetWindowContentScale(long window, MemorySegment xscale, MemorySegment yscale) {
+    public static void glfwGetWindowContentScale(long window, FloatPointer xscale, FloatPointer yscale) {
         try {
-            glfwGetWindowContentScale.invokeExact(window, xscale, yscale);
+            glfwGetWindowContentScale.invokeExact(window, xscale.getPhysicalAddress(), yscale.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -730,7 +737,7 @@ public final class GLFW {
         }
     }
 
-    public static void glfwSetWindowUserPointer(long window, MemorySegment pointer) {
+    public static void glfwSetWindowUserPointer(long window, long pointer) {
         try {
             glfwSetWindowUserPointer.invokeExact(window, pointer);
         } catch (Throwable e) {
@@ -738,9 +745,9 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetWindowUserPointer(long window) {
+    public static long glfwGetWindowUserPointer(long window) {
         try {
-            return (MemorySegment) glfwGetWindowUserPointer.invokeExact(window);
+            return (long) glfwGetWindowUserPointer.invokeExact(window);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -933,9 +940,9 @@ public final class GLFW {
         }
     }
 
-    public static void glfwGetCursorPos(long window, MemorySegment xpos, MemorySegment ypos) {
+    public static void glfwGetCursorPos(long window, DoublePointer xpos, DoublePointer ypos) {
         try {
-            glfwGetCursorPos.invokeExact(window, xpos, ypos);
+            glfwGetCursorPos.invokeExact(window, xpos.getPhysicalAddress(), ypos.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -1040,8 +1047,8 @@ public final class GLFW {
         try {
             Method m = callback.getClass().getMethod("callback", long.class, double.class, double.class);
             MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
-            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT), global);
-            glfwSetCharCallback.invokeExact(window, callbackAddress);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_DOUBLE, JAVA_DOUBLE), global);
+            glfwSetScrollCallback.invokeExact(window, callbackAddress);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -1051,8 +1058,8 @@ public final class GLFW {
         try {
             Method m = callback.getClass().getMethod("callback", long.class, int.class, MemorySegment[].class);
             MethodHandle callbackHandle = MethodHandles.lookup().unreflect(m);
-            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT), global);
-            glfwSetCharCallback.invokeExact(window, callbackAddress);
+            MemorySegment callbackAddress = linker.upcallStub(callbackHandle, ofVoid(JAVA_LONG, JAVA_INT, ADDRESS), global);
+            glfwSetDropCallback.invokeExact(window, callbackAddress);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -1066,39 +1073,39 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetJoyStickAxes(int jid, MemorySegment count) {
+    public static FloatPointer glfwGetJoyStickAxes(int jid, IntPointer count) {
         try {
-            return (MemorySegment) glfwGetJoystickAxes.invokeExact(jid, count);
+            return Pointer.ofAddressFloat((long) glfwGetJoystickAxes.invokeExact(jid, count));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetJoystickHats(int jid, MemorySegment count) {
+    public static StringPointer glfwGetJoystickHats(int jid, IntPointer count) {
         try {
-            return (MemorySegment) glfwGetJoystickHats.invokeExact(jid, count);
+            return StringPointer.ofAddressString((long) glfwGetJoystickHats.invokeExact(jid, count.getPhysicalAddress()));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetJoystickName(int jid) {
+    public static StringPointer glfwGetJoystickName(int jid) {
         try {
-            return (MemorySegment) glfwGetJoystickName.invokeExact(jid);
+            return StringPointer.ofAddressString((long) glfwGetJoystickName.invokeExact(jid));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetJoystickGUID(int jid) {
+    public static StringPointer glfwGetJoystickGUID(int jid) {
         try {
-            return (MemorySegment) glfwGetJoystickGUID.invokeExact(jid);
+            return StringPointer.ofAddressString((long) glfwGetJoystickGUID.invokeExact(jid));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static void glfwSetJoystickUserPointer(int jid, MemorySegment pointer) {
+    public static void glfwSetJoystickUserPointer(int jid, long pointer) {
         try {
             glfwSetJoystickUserPointer.invokeExact(jid, pointer);
         } catch (Throwable e) {
@@ -1106,9 +1113,9 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetJoystickUserPointer(int jid) {
+    public static long glfwGetJoystickUserPointer(int jid) {
         try {
-            return (MemorySegment) glfwGetJoystickUserPointer.invokeExact(jid);
+            return (long) glfwGetJoystickUserPointer.invokeExact(jid);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -1124,29 +1131,32 @@ public final class GLFW {
 
     public static void glfwSetJoystickCallback(GLFWjoystickfun callback) {
         try {
-            // TODO
+            Method m = callback.getClass().getMethod("callback", int.class, int.class);
+            MethodHandle handle = MethodHandles.lookup().unreflect(m);
+            MemorySegment address = linker.upcallStub(handle, ofVoid(JAVA_INT, JAVA_INT), global);
+            glfwSetJoystickCallback.invokeExact(address);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static int glfwUpdateGamepadMappings(MemorySegment string) {
+    public static int glfwUpdateGamepadMappings(StringPointer string) {
         try {
-            return (int) glfwUpdateGamepadMappings.invokeExact(string);
+            return (int) glfwUpdateGamepadMappings.invokeExact(string.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetGamepadName(int jid) {
+    public static StringPointer glfwGetGamepadName(int jid) {
         try {
-            return (MemorySegment) glfwGetGamepadName.invokeExact(jid);
+            return Pointer.ofAddressString((long) glfwGetGamepadName.invokeExact(jid));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static int glfwGetGamepadState(int jid, MemorySegment state) {
+    public static int glfwGetGamepadState(int jid, long state) {
         try {
             return (int) glfwGetGamepadState.invokeExact(jid, state);
         } catch (Throwable e) {
@@ -1154,17 +1164,17 @@ public final class GLFW {
         }
     }
 
-    public static void glfwSetClipboardString(long window, MemorySegment string) {
+    public static void glfwSetClipboardString(long window, StringPointer string) {
         try {
-            glfwSetClipboardString.invokeExact(window, string);
+            glfwSetClipboardString.invokeExact(window, string.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetClipboardString(long window) {
+    public static StringPointer glfwGetClipboardString(long window) {
         try {
-            return (MemorySegment) glfwGetClipboardString.invokeExact(window);
+            return Pointer.ofAddressString((long) glfwGetClipboardString.invokeExact(window));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -1234,17 +1244,17 @@ public final class GLFW {
         }
     }
 
-    public static int glfwExtensionSupported(MemorySegment extension) {
+    public static int glfwExtensionSupported(StringPointer extension) {
         try {
-            return (int) glfwExtensionSupported.invokeExact(extension);
+            return (int) glfwExtensionSupported.invokeExact(extension.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetProcAddress(MemorySegment procname) {
+    public static long glfwGetProcAddress(StringPointer procname) {
         try {
-            return (MemorySegment) glfwGetProcAddress.invokeExact(procname);
+            return (long) glfwGetProcAddress.invokeExact(procname.getPhysicalAddress());
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
@@ -1258,23 +1268,23 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwGetRequiredInstanceExtensions(MemorySegment count) {
+    public static StringPointer glfwGetRequiredInstanceExtensions(IntPointer count) {
         try {
-            return (MemorySegment) glfwGetRequiredInstanceExtensions.invokeExact(count);
+            return StringPointer.ofAddressString((long) glfwGetRequiredInstanceExtensions.invokeExact(count));
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static MemorySegment glfwGetInstanceProcAddress() {
+    public static long glfwGetInstanceProcAddress(long vkinstance, StringPointer procname) {
         try {
-            return (MemorySegment) glfwGetInstanceProcAddress.invokeExact();
+            return (long) glfwGetInstanceProcAddress.invokeExact();
         } catch (Throwable e) {
             throw new GLFWException(e);
         }
     }
 
-    public static int glfwGetPhysicalDevicePresentationSupport(MemorySegment instance, MemorySegment device, long queuefamily) {
+    public static int glfwGetPhysicalDevicePresentationSupport(long instance, long device, int queuefamily) {
         try {
             return (int) glfwGetPhysicalDevicePresentationSupport.invokeExact(instance, device, queuefamily);
         } catch (Throwable e) {
@@ -1282,9 +1292,9 @@ public final class GLFW {
         }
     }
 
-    public static MemorySegment glfwCreateWindowSurface(MemorySegment instance, long window, MemorySegment allocator, MemorySegment surface) {
+    public static long glfwCreateWindowSurface(long instance, long window, long allocator, long surface) {
         try {
-            return (MemorySegment) glfwCreateWindowSurface.invokeExact(instance, window, allocator, surface);
+            return (long) glfwCreateWindowSurface.invokeExact(instance, window, allocator, surface);
         } catch (Throwable e) {
             throw new GLFWException(e);
         }

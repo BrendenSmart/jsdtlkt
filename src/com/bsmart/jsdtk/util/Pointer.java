@@ -9,6 +9,7 @@ public abstract class Pointer {
 
     protected static final Arena arena;
 
+
     static {
         arena = Arena.global();
     }
@@ -59,6 +60,46 @@ public abstract class Pointer {
 
     public static StringPointer mallocString(String value) {
         return new StringPointer(value);
+    }
+
+    public static StringPointer ofAddressString(long address) {
+        return new StringPointer(address);
+    }
+
+    public static IntPointer ofAddressInt(long address) {
+        return new IntPointer(address, true);
+    }
+
+    public static ShortPointer ofAddressShort(long address) {
+        return new ShortPointer(address, true);
+    }
+
+    public static CharPointer ofAddressChar(long address) {
+        return new CharPointer(address, true);
+    }
+
+    public static BytePointer ofAddressByte(long address) {
+        return new BytePointer(address, true);
+    }
+
+    public static FloatPointer ofAddressFloat(long address) {
+        return new FloatPointer(address, true);
+    }
+
+    public static LongPointer ofAddressLong(long address) {
+        return new LongPointer(address, true);
+    }
+
+    public static DoublePointer mallocDouble() {
+        return new DoublePointer();
+    }
+
+    public static DoublePointer mallocDouble(double value) {
+        return new DoublePointer(value);
+    }
+
+    public static DoublePointer ofAddressDouble(long address) {
+        return new DoublePointer(address);
     }
 
     protected MemorySegment ptr;
